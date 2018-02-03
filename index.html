@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Electron Hello World!</title>
+    
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"> 
+    <script type="text/javascript" src="Game.js"></script>
+    <script type="text/javascript" src="Word.js"></script>
+    <script type="text/javascript" src="Letter.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+
+    <script>
+    window.$ = window.jQuery = require('jquery');
+
+ 
+
+    function replaceWord(newText){
+
+      numBlanks = newText.length; 
+        
+        newText = [];
+       
+        // Fill up the newText list with appropriate number of blanks.
+        // This is based on number of letters in solution.
+          for (var i = 0; i < numBlanks; i++) {
+              newText.push("_");
+          }
+
+ 
+      $("#word-blanks").text(newText);  
+
+    } 
+
+   function playAgain() {
+             var movieName = "Beautiful Day";
+              getActorId("Will", function(actorID) {
+              getMovies(actorID, function(actorID, res) {
+                movieName = module.exports.chosenWord;
+                doPlayAgain(movieName); 
+                console.log(movieName);
+                });
+              });
+ 
+   }
+
+    function doPlayAgain(movieName) {
+          console.log(movieName);
+    
+
+          replaceWord(movieName);
+          $("#guesses-left").text(10);  
+          $("#message").text("");  
+
+          var newWord = new word.Word(module.exports.chosenWord);
+          
+             document.onkeyup = function(event) {
+           
+
+            // Converts all key clicks to lowercase letters.
+                letterGuessed = String.fromCharCode(event.keyCode).toLowerCase();
+                // Runs the code to check for correct guesses.
+            
+            
+                console.log(event);
+   
+                var message = "";
+                if (newWord.trysLeft === 0 || newWord.isComplete()) {
+                     message = "Sorry you are done. Press the Start Again Button!";
+                          
+                } else {
+                    newWord.checkLetter(letterGuessed);
+                    if (newWord.isLetterValid) {
+                        message = "Sorry but you have already guessed that letter, please try a different one!";
+                        $("#message").text(message);  
+                 
+                   } 
+                  else {
+                      if (newWord.isComplete()) {
+                          message = "CORRECT! YOU WIN! Press the Start Again Button! ";
+                          
+                      } else if (newWord.trysLeft === 0) {
+                        message = "Sorry but you are all out of trys! The answer was " + " ' " + newWord.chosenWord + " ' ";
+                      }
+                      else {
+
+                          message = "You have " + newWord.trysLeft + " remaining trys left!";
+                         
+                      }
+                      $("#word-blanks").text(newWord.print());  
+                      $("#guesses-left").text(newWord.trysLeft);  
+                      $("#message").text(message);  
+
+                  } 
+                }  
+            }
+    }
+
+   
+
+      $(document).ready(function() {
+        
+          $( "#button" ).click(function() {
+            playAgain();
+          });
+
+        playAgain();
+      });
+
+        
+
+
+    </script>
+    
+   
+  </head>
+  
+  <body>
+          <!-- Bootstrap Container will hold everything. -->
+    <div class='container'>
+      <!-- Jumbotron holds the title section. -->
+      <div class='jumbotron'>
+        <div class='container'>
+          <h1>Electron / Node.js - Hangman</h1>
+          <h2>Guess the name of the movie!</h2>
+          <small>Click any letter to begin...</small>
+        </div>
+      </div>
+      <!-- Game counters held here. Panels are being used to hold various sections. -->
+      <div class='row'>
+        <div class='col-lg-12'>
+          <!-- First Panel: Holds the Word to Guess (blanks and guessed word). -->
+          <div class='panel panel-default'>
+            <div class='panel-heading'>
+              <h3 class='panel-title'><strong>Word to Guess</strong></h3>
+            </div>
+            <div class='panel-body'>
+              <!-- This h3 section called word-blanks is what we'll be replacing with letters as the user guesses. Pay particular attention to the id called ***word-blanks***. We'll be referencing this in the JavaScript. -->
+              <h3 id='word-blanks'>_ _ _ _ _ _ _ _ _ </h3>
+            </div>
+          </div>
+          <!-- Second Panel: Holds the list of Wrong User Guesses. -->
+          <div class='panel panel-default'>
+            <div class='panel-body'>
+              <!-- This span section called wrong-guesses is where we will be dumping the wrong guesses. Pay particular attention to the id called ****wrong-guesses***. We'll be referencing this in the JavaScript. -->
+              <strong>Wrong Guesses: </strong> <span id='wrong-guesses'></span>
+            </div>
+          </div>
+          <!-- Third Panel: Holds the Number of Wrong Guesses. -->
+          <div class='panel panel-default'>
+            <div class='panel-body'>
+              <!-- This span is where we'll dump the number of guesses left. Pay attention to the id called ****guesses-left**** we'll be referencing this in the JavaScript. -->
+              <strong>Guesses Left: </strong> <span id='guesses-left'></span>
+            </div>
+          </div>
+          <!-- Fourth Panel: Holds the number of Wins. -->
+          <div class='panel panel-default'>
+            <div class='panel-body'>
+              <!-- This span called win-counter is where we'll be dumping the number of wins. Pay attention to the id called ****win-counter*** we'll be referencing this in the JavaScript. -->
+              <strong><span id='message'> </strong></span>
+            </div>
+          </div>
+          <!-- Fifth Panel: Holds the number of Losses. -->
+          <div class='panel panel-default'>
+            <div class='panel-body'>
+              <!-- This span called loss-counter is where we'll be dumping the number of losses. Pay attention to the id called ****loss-counter***; we'll be referencing this in the JavaScript. -->
+              <span id='button'><button>Play Again</button></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </body>
+</html>

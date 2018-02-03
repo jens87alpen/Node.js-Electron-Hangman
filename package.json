@@ -1,0 +1,12 @@
+{
+  "name": "electron-hello-world",
+  "version": "0.1.0",
+  "main": "main.js",
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "inquirer": "^5.0.1",
+    "jquery": "^3.3.1",
+    "moviedb": "^0.2.10",
+    "request": "^2.83.0"
+  }
+}
