@@ -2,7 +2,7 @@
 
 # Installation
 - install Node.js
-- cd to Node.js-Electron-Hangman directory
+- cd to 'Node.js-Electron-Hangman' directory
 - npm install
 
 
